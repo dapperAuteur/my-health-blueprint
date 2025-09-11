@@ -46,8 +46,25 @@ CREATE TABLE "public"."health_blueprints" (
     CONSTRAINT "health_blueprints_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "public"."magic_tokens" (
+    "id" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "magic_tokens_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "public"."User"("email");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "magic_tokens_token_key" ON "public"."magic_tokens"("token");
+
 -- AddForeignKey
 ALTER TABLE "public"."health_blueprints" ADD CONSTRAINT "health_blueprints_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."magic_tokens" ADD CONSTRAINT "magic_tokens_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
