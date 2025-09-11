@@ -1,0 +1,117 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // or "mysql" or "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String            @id @default(cuid())
+  email            String            @unique
+  name             String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  healthBlueprints HealthBlueprint[]
+}
+
+model HealthBlueprint {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Basic Info
+  name        String
+  email       String
+  
+  // Health Goals
+  goal1       String?
+  goal2       String?
+  goal3       String?
+  
+  // Key Metrics (JSON fields for flexibility)
+  keyMetrics  Json     // Array of {metric, currentAverage, targetGoal, trackingMethod}
+  
+  // 90-Day Plans
+  month1Plan  Json     // {primaryFocus, week1, week2, week3, week4, successTarget}
+  month2Plan  Json
+  month3Plan  Json
+  
+  // Why Statement
+  whyStatement          String?
+  achievementBenefits   String?
+  mostImportantBenefit  String?
+  
+  // Support System
+  healthBuddy         String?
+  connectionMethods   Json  // Array of strings
+  familySupport       Json  // {encourager, exercisePartner, goalSharer}
+  
+  // Obstacles
+  obstacles       Json  // Array of {challenge, plan}
+  emergencyPlan   Json  // Array of strings
+  
+  // Check-in Schedule
+  checkInDates    Json  // {month1, month2, month3}
+  
+  // Resources
+  apps              Json  // Array of {name, purpose}
+  equipment         Json  // Array of strings
+  learningResources Json  // Array of strings
+  
+  // Celebration
+  weeklyRewards     String?
+  monthlyRewards    String?
+  ninetyDayReward   String?
+  
+  // Commitment
+  commitments       Json  // Array of strings
+  
+  // Timestamps
+  completedAt   DateTime?
+  lastSavedAt   DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("health_blueprints")
+}
+
+
+
+
+
+
+
+
+
+
+
+// package.json dependencies to add:
+/*
+{
+  "dependencies": {
+    "@prisma/client": "^5.7.0",
+    "@heroicons/react": "^2.0.18",
+    "zod": "^3.22.4",
+    "prisma": "^5.7.0"
+  }
+}
+*/
+
+// Environment variables needed (.env.local):
+/*
+DATABASE_URL="postgresql://username:password@localhost:5432/health_blueprint_db"
+NEXTAUTH_SECRET="your-secret-key"
+NEXTAUTH_URL="http://localhost:3000"
+*/
+
+// To set up the database:
+/*
+1. npm install @prisma/client prisma zod @heroicons/react
+2. npx prisma init
+3. Update prisma/schema.prisma with the schema above
+4. npx prisma migrate dev --name init
+5. npx prisma generate
+*/
