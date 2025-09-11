@@ -4,11 +4,12 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { userId: string } }
+  context: { params: { userId: string } }
 ) {
   try {
+    const { userId } = context.params;
     const blueprint = await prisma.healthBlueprint.findFirst({
-      where: { userId: params.userId }
+      where: { userId: userId }
     })
     
     if (!blueprint) {
