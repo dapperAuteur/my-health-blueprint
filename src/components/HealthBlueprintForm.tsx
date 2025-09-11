@@ -229,8 +229,11 @@ export default function HealthBlueprintForm({ userId }: { userId: string }) {
     }
   }
 
-  const updateFormData = (section: string, value: any) => {
-    setFormData(prev => ({ ...prev, [section]: value }))
+  const updateFormData = <K extends keyof HealthBlueprintData>(
+    section: K,
+    value: HealthBlueprintData[K]
+  ) => {
+    setFormData((prev) => ({ ...prev, [section]: value }));
   }
 
   const renderStep = () => {
@@ -399,14 +402,14 @@ function HealthGoalsStep({ data, onChange }: { data: HealthGoal, onChange: (valu
     <div className="space-y-6">
       <p className="text-gray-600 mb-6">Write your top 3 health goals in simple, clear words that motivate you.</p>
       
-      {['goal1', 'goal2', 'goal3'].map((goalKey, index) => (
+      {(['goal1', 'goal2', 'goal3'] as const).map((goalKey, index) => (
         <div key={goalKey}>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Goal {index + 1}:
           </label>
           <input
             type="text"
-            value={data[goalKey as keyof HealthGoal]}
+            value={data[goalKey]}
             onChange={(e) => onChange({ ...data, [goalKey]: e.target.value })}
             placeholder={`e.g., "I want to sleep better and wake up feeling rested"`}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -430,7 +433,7 @@ function KeyMetricsStep({ data, onChange }: { data: KeyMetric[], onChange: (valu
 
   return (
     <div className="space-y-6">
-      <p className="text-gray-600 mb-6">Choose 3-5 numbers you'll track regularly to measure your progress.</p>
+      <p className="text-gray-600 mb-6">Choose 3-5 numbers you&apos;ll track regularly to measure your progress.</p>
       
       {data.map((metric, index) => (
         <div key={index} className="bg-gray-50 p-4 rounded-lg">
@@ -463,7 +466,7 @@ function KeyMetricsStep({ data, onChange }: { data: KeyMetric[], onChange: (valu
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">How I'll Track:</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">How I&apos;ll Track:</label>
               <select
                 value={metric.trackingMethod}
                 onChange={(e) => updateMetric(index, 'trackingMethod', e.target.value)}
@@ -521,12 +524,12 @@ function NinetyDayPlanStep({
           />
         </div>
         
-        {['week1', 'week2', 'week3', 'week4'].map((week, index) => (
+        {(['week1', 'week2', 'week3', 'week4'] as const).map((week, index) => (
           <div key={week}>
             <label className="block text-sm font-medium text-gray-700 mb-2">Week {index + 1}:</label>
             <input
               type="text"
-              value={data[week as keyof MonthlyPlan] as string}
+              value={data[week]}
               onChange={(e) => onChange({ ...data, [week]: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
               placeholder={`What will you do in week ${index + 1}?`}
@@ -635,10 +638,12 @@ function SupportSystemStep({
   healthBuddy, connectionMethods, familySupport,
   onBuddyChange, onMethodsChange, onFamilyChange 
 }: {
-  healthBuddy: string, connectionMethods: string[], familySupport: any,
+  healthBuddy: string, 
+  connectionMethods: string[], 
+  familySupport: HealthBlueprintData['familySupport'],
   onBuddyChange: (value: string) => void,
   onMethodsChange: (value: string[]) => void,
-  onFamilyChange: (value: any) => void
+  onFamilyChange: (value: HealthBlueprintData['familySupport']) => void
 }) {
   const connectionOptions = [
     'Weekly text check-ins',
@@ -673,7 +678,7 @@ function SupportSystemStep({
       </div>
       
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">How we'll stay connected:</label>
+        <label className="block text-sm font-medium text-gray-700 mb-3">How we&apos;ll stay connected:</label>
         <div className="space-y-2">
           {connectionOptions.map((option) => (
             <label key={option} className="flex items-center">
@@ -711,7 +716,7 @@ function SupportSystemStep({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Who I'll share my goals with:</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Who I&apos;ll share my goals with:</label>
             <input
               type="text"
               value={familySupport.goalSharer}
@@ -747,7 +752,7 @@ function ObstaclesStep({
 
   return (
     <div className="space-y-6">
-      <p className="text-gray-600 mb-6">Plan for challenges before they happen so you're ready to overcome them.</p>
+      <p className="text-gray-600 mb-6">Plan for challenges before they happen so you&apos;re ready to overcome them.</p>
       
       <div>
         <h4 className="font-medium text-gray-900 mb-4">Potential Challenges & Solutions:</h4>
@@ -844,7 +849,7 @@ function ResourcesStep({
       <p className="text-gray-600 mb-6">Identify the tools and resources that will support your health journey.</p>
       
       <div>
-        <h4 className="font-medium text-gray-900 mb-4">Apps I'll Use:</h4>
+        <h4 className="font-medium text-gray-900 mb-4">Apps I&apos;ll Use:</h4>
         {apps.map((app, index) => (
           <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
             <div>
@@ -917,7 +922,7 @@ function CelebrationStep({
 }) {
   return (
     <div className="space-y-6">
-      <p className="text-gray-600 mb-6">Plan how you'll celebrate your progress to stay motivated throughout your journey.</p>
+      <p className="text-gray-600 mb-6">Plan how you&apos;ll celebrate your progress to stay motivated throughout your journey.</p>
       
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -1029,9 +1034,9 @@ function CommitmentStep({
       </div>
       
       <div className="bg-green-50 p-4 rounded-lg">
-        <h4 className="font-medium text-green-900 mb-2">🎉 You're Ready to Start!</h4>
+        <h4 className="font-medium text-green-900 mb-2">🎉 You&apos;re Ready to Start!</h4>
         <p className="text-sm text-green-800">
-          Once you complete your blueprint, you'll receive a personalized PDF summary and access to our alumni community 
+          Once you complete your blueprint, you&apos;ll receive a personalized PDF summary and access to our alumni community 
           where you can track your progress and connect with other health-focused individuals.
         </p>
       </div>
