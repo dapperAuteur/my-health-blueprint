@@ -4,11 +4,11 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
     const user = await prisma.user.findUnique({
-      where: { id: params.userId }
+      where: { id: (await params).userId }
     })
 
     if (!user) {
