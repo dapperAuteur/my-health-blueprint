@@ -1,7 +1,7 @@
 // lib/email.ts
 import nodemailer from 'nodemailer'
 
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
   // Configure your email service here
   host: process.env.SMTP_HOST,
   port: parseInt(process.env.SMTP_PORT || '587'),
