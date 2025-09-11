@@ -24,7 +24,7 @@ export default function SuccessPage() {
           🎉 Your Health Blueprint is Complete!
         </h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Congratulations! You've created a personalized roadmap for the next 90 days. 
+          Congratulations! You&apos;ve created a personalized roadmap for the next 90 days. 
           Your journey to better health starts now.
         </p>
       </div>
@@ -67,7 +67,7 @@ export default function SuccessPage() {
           <AcademicCapIcon className="w-8 h-8 text-purple-600 mx-auto mb-3" />
           <h3 className="font-semibold text-gray-900 mb-2">Continue Learning</h3>
           <p className="text-sm text-gray-600 mb-4">
-            Ready for "Intervention Design"? 25% off for graduates!
+            Ready for &quot;Intervention Design&quot;? 25% off for graduates!
           </p>
           <Link
             href="/courses/intervention-design?discount=GRADUATE25"
