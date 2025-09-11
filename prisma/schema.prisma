@@ -15,6 +15,7 @@ model User {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   healthBlueprints HealthBlueprint[]
+  magicTokens      MagicToken[]
 }
 
 model HealthBlueprint {
@@ -78,6 +79,27 @@ model HealthBlueprint {
   @@map("health_blueprints")
 }
 
+model MagicToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("magic_tokens")
+}
+
+// Update User model to include magic tokens
+// model User {
+//   id               String            @id @default(cuid())
+//   email            String            @unique
+//   name             String?
+//   createdAt        DateTime          @default(now())
+//   updatedAt        DateTime          @updatedAt
+//   healthBlueprints HealthBlueprint[]
+//   magicTokens      MagicToken[]
+// }
 
 
 
